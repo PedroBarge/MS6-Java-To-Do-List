@@ -29,8 +29,8 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + count + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
 
 //            System.out.println("\n\u001b[38;5;15m " + Arrays.toString(toDoList) + "\u001b[0m");
-
-            System.out.println("\n\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
+            System.out.println();
+            System.out.println("\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
             System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
             System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
             System.out.println("\u001b[38;5;15m4 - Remove as completed\u001b[0m");
