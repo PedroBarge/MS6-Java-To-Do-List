@@ -1,13 +1,16 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.sql.Timestamp;
 
 public class ToDoList {
     static Scanner scan = new Scanner(System.in);
     static ArrayList<String> doneTask = new ArrayList<>();
     static ArrayList<String> removedTask = new ArrayList<>();
+    static ArrayList<String> timeStampsArray = new ArrayList<>();
     static String[] toDoList;
 
+    static int userChoice=1;
 
     public static void main(String[] args) {
         //------------------------------------------------------------------//
@@ -21,94 +24,108 @@ public class ToDoList {
             toDoList = new String[30];
         }
         //------------------------------------------------------------------//
-        int userChoice = 0;
-        do {
-            int count = 0;
-            for (int i = 0; i < toDoList.length; i++) {
-                if (toDoList[i] == null) {
-                    count++;
-                }
-            }
-            //------------------------------------------------------------------//
-            //Menu Principal
-            System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + count + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
-            System.out.println();
-            showMenu();
-            userChoice = scan.nextInt();
-            //------------------------------------------------------------------//
-            //Opções Menu
-            switch (userChoice) {
-                case 1:
-                    showToDoList(toDoList);
-                    break;
-                case 2:
-                    createTask(toDoList);
-                    break;
-                case 3:
-                    markTaskAsCompleted(toDoList);
-                    break;
-                case 4:
-                    removeTaskAsCompleted(toDoList);
-                    break;
-                case 5:
-                    editTask(toDoList);
-                    break;
-                case 6:
-                    deleteTask(toDoList);
-                    break;
-                case 7:
-                    organizeAlphabetically(toDoList);
-                    break;
-                case 8:
-                    premiumPlan = upgradeToDoListPlan(toDoList, premiumPlan);
-                    if (premiumPlan) {
-                        String[] tempToDoList = new String[30];
 
-                        for (int i = 0; i < toDoList.length; i++) {
-                            if (i < tempToDoList.length) {
-                                tempToDoList[i] = toDoList[i];
-                            } else {
-                                break;
-                            }
-                        }
-
-                        toDoList = tempToDoList;
+        while (userChoice != 0) {
+            try {
+                int count = 0;
+                for (int i = 0; i < toDoList.length; i++) {
+                    if (toDoList[i] == null) {
+                        count++;
                     }
-                    break;
-                case 9:
-                    removeAllTaskCompleted(toDoList);
-                    break;
-                case 10:
-                    recoverRemovedTask();
-                    break;
-                case 0:
-                    System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
-                    break;
-                default:
-                    System.out.println("\n\u001b[38;5;9mInvalid option!\u001b[0m");
-                    break;
-            }
+                }
+                //------------------------------------------------------------------//
+                //Menu Principal
+                System.out.println("\n\u001b[38;5;15mYou still have \u001b[38;5;11m" + count + "\u001b[38;5;15m free spaces on the list!\u001b[0m");
+                System.out.println();
+                showMenu();
+                userChoice = scan.nextInt();
+                //------------------------------------------------------------------//
+                //Opções Menu
+                switch (userChoice) {
+                    case 1:
+                        showToDoList(toDoList);
+                        break;
+                    case 2:
+                        createTask(toDoList);
+                        break;
+                    case 3:
+                        markTaskAsCompleted(toDoList);
+                        break;
+                    case 4:
+                        removeTaskAsCompleted(toDoList);
+                        break;
+                    case 5:
+                        editTask(toDoList);
+                        break;
+                    case 6:
+                        deleteTask(toDoList);
+                        break;
+                    case 7:
+                        organizeAlphabetically(toDoList);
+                        break;
+                    case 8:
+                        premiumPlan = upgradeToDoListPlan(toDoList, premiumPlan);
+                        if (premiumPlan) {
+                            String[] tempToDoList = new String[30];
 
-        } while (userChoice != 0);
+                            for (int i = 0; i < toDoList.length; i++) {
+                                if (i < tempToDoList.length) {
+                                    tempToDoList[i] = toDoList[i];
+                                } else {
+                                    break;
+                                }
+                            }
+
+                            toDoList = tempToDoList;
+                        }
+                        break;
+                    case 9:
+                        removeAllTaskCompleted(toDoList);
+                        break;
+                    case 10:
+                        recoverRemovedTask();
+                        break;
+                    case 11:
+                        showTimeStamps();
+                        break;
+                    case 12:
+                        organizeTask();
+                        break;
+                    case 0:
+                        System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
+                        break;
+                    default:
+                        System.out.println("\n\u001b[38;5;9mInvalid option!\u001b[0m");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                System.out.println("Error");
+                scan.next();
+            }
+        }
+
     }
 
     //------------------------------------------------------------------//
     public static void showMenu() {
-        System.out.println("\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
-        System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
-        System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
-        System.out.println("\u001b[38;5;15m4 - Remove as completed\u001b[0m");
-        System.out.println("\u001b[38;5;15m5 - Edit task\u001b[0m");
-        System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
-        System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
-        System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
+        System.out.println("\u001b[38;5;15m 1 - Show ToDoList\u001b[0m");
+        System.out.println("\u001b[38;5;15m 2 - Create task\u001b[0m");
+        System.out.println("\u001b[38;5;15m 3 - Mark as completed\u001b[0m");
+        System.out.println("\u001b[38;5;15m 4 - Remove as completed\u001b[0m");
+        System.out.println("\u001b[38;5;15m 5 - Edit task\u001b[0m");
+        System.out.println("\u001b[38;5;15m 6 - Delete task\u001b[0m");
+        System.out.println("\u001b[38;5;15m 7 - Organize alphabetically\u001b[0m");
+        System.out.println("\u001b[38;5;15m 8 - Upgrade ToDoList Plan\u001b[0m");
         System.out.println("+----------+");
-        System.out.println("\u001b[38;5;15m9 - Remove all completed\u001b[0m");
-        System.out.println("\u001b[38;5;15m10 -Recover removed tasks \u001b[0m");
-        System.out.println("\u001b[38;5;15m11 -\u001b[0m");
+        System.out.println("\u001b[38;5;15m 9 - Remove all completed\u001b[0m");
+        System.out.println("\u001b[38;5;15m10 - Recover removed tasks \u001b[0m");
+        System.out.println("\u001b[38;5;15m11 - Show time stamps\u001b[0m");
+        System.out.println("\u001b[38;5;15m12 - Organize by done\u001b[0m");
         System.out.println("+----------+");
         System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
         System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
+
     }
 
     //------------------------------------------------------------------//
@@ -138,6 +155,19 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
+    public static void showPercentage(String[] toDoList) {
+        System.out.println("Task Completion Percentage");
+        double temp = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
+                temp++;
+            }
+        }
+        temp = temp / 100;
+        System.out.println(temp + "%");
+    }
+
+    //------------------------------------------------------------------//
     public static void createTask(String[] toDoList) {
         System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
         scan.nextLine();
@@ -148,6 +178,7 @@ public class ToDoList {
                 if (toDoList[i] == null) {
                     toDoList[i] = userNewTask;
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + userNewTask + "\u001b[38;5;10m' was created!\u001b[0m");
+                    addTimeStamps("Task " + userNewTask + " created at: ");
                     creatNote(toDoList, i);
                     added = true;
                     break;
@@ -198,6 +229,8 @@ public class ToDoList {
                 } else {
                     toDoList[userChoiceOfTaskToMarkAsCompleted] = toDoList[userChoiceOfTaskToMarkAsCompleted].concat(" ✅");
                     System.out.println("\n\u001b[38;5;10mTask successfuly marked as completed!\u001b[0m");
+                    showPercentage(toDoList);
+                    addTimeStamps("Mark " + toDoList[userChoiceOfTaskToMarkAsCompleted] + "  as completed at: ");
                 }
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
@@ -256,7 +289,7 @@ public class ToDoList {
         int countSpace = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
-                countSpace ++;
+                countSpace++;
             } else {
                 toDoList[countSpace] = removedTask.get(optIn);
             }
@@ -287,14 +320,15 @@ public class ToDoList {
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToEdit] + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask + "\u001b[38;5;10m'!");
                     userEditTask = userEditTask.concat(" ✅");
                     toDoList[userChoiceOfTaskToEdit] = userEditTask;
+
                 } else {
                     System.out.println("\n\u001b[38;5;15mOld: " + toDoList[userChoiceOfTaskToEdit] + "\u001b[0m");
                     System.out.print("\u001b[38;5;15mNew: \u001b[0m");
                     scan.nextLine();
                     String userEditTask = scan.nextLine();
-
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToEdit] + "\u001b[38;5;10m' was changed to '\u001b[38;5;15m" + userEditTask + "\u001b[38;5;10m'!");
                     toDoList[userChoiceOfTaskToEdit] = userEditTask;
+                    addTimeStamps("Task" + toDoList[userChoiceOfTaskToEdit] + " edited at: ");
                 }
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
@@ -321,6 +355,7 @@ public class ToDoList {
                 System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToDelete] + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
                 removedTask.add(toDoList[userChoiceOfTaskToDelete]);
                 toDoList[userChoiceOfTaskToDelete] = null;
+                addTimeStamps("Deleted " + toDoList[userChoiceOfTaskToDelete] + " task at: ");
             } else {
                 System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
@@ -330,17 +365,20 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    //VER!!!!
     public static void organizeTask() {
-        for (int i = 0; i < toDoList.length - 1; i++) {
+        int count = 0;
+        for (int i = 0; i < toDoList.length; i++) {
             for (int j = 0; j < toDoList.length - i - 1; j++) {
-                if (toDoList[j].contains(" ✅") && !toDoList[j + 1].contains(" ✅")) {
+                if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
                     String temp = toDoList[j];
                     toDoList[j] = toDoList[j + 1];
                     toDoList[j + 1] = temp;
+                    count++;
                 }
             }
         }
+        Arrays.sort(toDoList, 0, count);
+        showToDoList(toDoList);
     }
 
     //------------------------------------------------------------------//
@@ -352,6 +390,7 @@ public class ToDoList {
             }
         }
         Arrays.sort(toDoList, 0, count);
+        showToDoList(toDoList);
     }
 
     //------------------------------------------------------------------//
@@ -376,6 +415,22 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;11mYour plan is already setted to Premium! You don't need to buy it again.\u001b[0m");
         }
         return premium;
+    }
+
+    //------------------------------------------------------------------//
+    public static void addTimeStamps(String type) {
+        String timeStampsString;
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        timeStampsString = currentTimestamp.toString();
+        //System.out.println(timeStampsString);
+        timeStampsArray.add(type + " " + timeStampsString);
+    }
+
+    //------------------------------------------------------------------//
+    public static void showTimeStamps() {
+        for (int i = 0; i < timeStampsArray.size(); i++) {
+            System.out.println(timeStampsArray.get(i));
+        }
     }
     //------------------------------------------------------------------//
 
