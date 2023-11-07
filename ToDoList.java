@@ -125,7 +125,6 @@ public class ToDoList {
         System.out.println("+----------+");
         System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
         System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
-
     }
 
     //------------------------------------------------------------------//
