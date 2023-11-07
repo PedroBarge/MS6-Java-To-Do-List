@@ -10,7 +10,7 @@ public class ToDoList {
     static ArrayList<String> timeStampsArray = new ArrayList<>();
     static String[] toDoList;
 
-    static int userChoice=1;
+    static int userChoice = 1;
 
     public static void main(String[] args) {
         //------------------------------------------------------------------//
@@ -43,28 +43,28 @@ public class ToDoList {
                 //Opções Menu
                 switch (userChoice) {
                     case 1:
-                        showToDoList(toDoList);
+                        showToDoList();
                         break;
                     case 2:
-                        createTask(toDoList);
+                        createTask();
                         break;
                     case 3:
-                        markTaskAsCompleted(toDoList);
+                        markTaskAsCompleted();
                         break;
                     case 4:
-                        removeTaskAsCompleted(toDoList);
+                        removeTaskAsCompleted();
                         break;
                     case 5:
-                        editTask(toDoList);
+                        editTask();
                         break;
                     case 6:
-                        deleteTask(toDoList);
+                        deleteTask();
                         break;
                     case 7:
-                        organizeAlphabetically(toDoList);
+                        organizeAlphabetically();
                         break;
                     case 8:
-                        premiumPlan = upgradeToDoListPlan(toDoList, premiumPlan);
+                        premiumPlan = upgradeToDoListPlan( premiumPlan);
                         if (premiumPlan) {
                             String[] tempToDoList = new String[30];
 
@@ -80,7 +80,7 @@ public class ToDoList {
                         }
                         break;
                     case 9:
-                        removeAllTaskCompleted(toDoList);
+                        removeAllTaskCompleted();
                         break;
                     case 10:
                         recoverRemovedTask();
@@ -128,7 +128,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void showToDoList(String[] toDoList) {
+    public static void showToDoList() {
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
@@ -154,7 +154,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void showPercentage(String[] toDoList) {
+    public static void showPercentage() {
         System.out.println("Task Completion Percentage");
         double temp = 0;
         for (int i = 0; i < toDoList.length; i++) {
@@ -167,7 +167,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void createTask(String[] toDoList) {
+    public static void createTask() {
         System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
         scan.nextLine();
         String userNewTask = scan.nextLine().trim();
@@ -178,7 +178,7 @@ public class ToDoList {
                     toDoList[i] = userNewTask;
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + userNewTask + "\u001b[38;5;10m' was created!\u001b[0m");
                     addTimeStamps("Task " + userNewTask + " created at: ");
-                    creatNote(toDoList, i);
+                    creatNote(i);
                     added = true;
                     break;
                 }
@@ -192,8 +192,8 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void creatNote(String[] toDoList, int num) {
-        if (toDoList[num] != null) {
+    public static void creatNote(int num) {
+        if (ToDoList.toDoList[num] != null) {
             System.out.println("Creat a note");
             System.out.println("[Y]es / [N]o");
             String choiceYN = scan.next().toLowerCase();
@@ -202,7 +202,7 @@ public class ToDoList {
                 System.out.print("Insert note: ");
                 scan.nextLine();
                 String newNote = scan.nextLine();
-                toDoList[num] += " Note:" + newNote;
+                ToDoList.toDoList[num] += " Note:" + newNote;
             } else System.out.println("Continue...");
         } else {
             System.out.println("Impossible to create a note");
@@ -210,7 +210,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void markTaskAsCompleted(String[] toDoList) {
+    public static void markTaskAsCompleted() {
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
@@ -228,7 +228,7 @@ public class ToDoList {
                 } else {
                     toDoList[userChoiceOfTaskToMarkAsCompleted] = toDoList[userChoiceOfTaskToMarkAsCompleted].concat(" ✅");
                     System.out.println("\n\u001b[38;5;10mTask successfuly marked as completed!\u001b[0m");
-                    showPercentage(toDoList);
+                    showPercentage();
                     addTimeStamps("Mark " + toDoList[userChoiceOfTaskToMarkAsCompleted] + "  as completed at: ");
                 }
             } else {
@@ -240,7 +240,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void removeTaskAsCompleted(String[] toDoList) {
+    public static void removeTaskAsCompleted() {
         int existsCompletedTasks = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
@@ -263,7 +263,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void removeAllTaskCompleted(String[] toDoList) {
+    public static void removeAllTaskCompleted() {
         int counter = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
@@ -274,7 +274,7 @@ public class ToDoList {
                 counter++;
             }
         }
-        showToDoList(toDoList);
+        showToDoList();
     }
 
     //------------------------------------------------------------------//
@@ -296,7 +296,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void editTask(String[] toDoList) {
+    public static void editTask() {
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
@@ -338,7 +338,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static void deleteTask(String[] toDoList) {
+    public static void deleteTask() {
         int existedTasks = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
@@ -377,11 +377,11 @@ public class ToDoList {
             }
         }
         Arrays.sort(toDoList, 0, count);
-        showToDoList(toDoList);
+        showToDoList();
     }
 
     //------------------------------------------------------------------//
-    public static void organizeAlphabetically(String[] toDoList) {
+    public static void organizeAlphabetically() {
         int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             if (toDoList[i] != null) {
@@ -389,11 +389,11 @@ public class ToDoList {
             }
         }
         Arrays.sort(toDoList, 0, count);
-        showToDoList(toDoList);
+        showToDoList();
     }
 
     //------------------------------------------------------------------//
-    public static boolean upgradeToDoListPlan(String[] toDoList, boolean premium) {
+    public static boolean upgradeToDoListPlan( boolean premium) {
         if (!premium) {
             System.out.println("\n\u001b[38;5;15mDo you want to buy Premium Plan? (yes or no)\u001b[0m");
             System.out.print("\u001b[38;5;15m> \u001b[0m");
@@ -432,6 +432,4 @@ public class ToDoList {
         }
     }
     //------------------------------------------------------------------//
-
-
 }
