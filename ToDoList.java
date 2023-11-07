@@ -1,13 +1,19 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class ToDoList {
     static Scanner scan = new Scanner(System.in);
+    static ArrayList<String> doneTask = new ArrayList<>();
+    static ArrayList<String> removedTask = new ArrayList<>();
+    static String[] toDoList;
+
+
     public static void main(String[] args) {
         //------------------------------------------------------------------//
         //Plano premium
         boolean premiumPlan = false;
-        String[] toDoList;
+
         if (!premiumPlan) {
             System.out.println("\n\t\t\t\t\u001b[43;1m\u001b[38;5;15mIMPORTANT WARNING\u001b[0m\u001b[38;5;11m\nYou are currently using the Free Plan of ToDoList!\nYou can upgrade to Premium Plan in the upgrade menu!\u001b[0m");
             toDoList = new String[10];
@@ -69,6 +75,12 @@ public class ToDoList {
                         toDoList = tempToDoList;
                     }
                     break;
+                case 9:
+                    removeAllTaskCompleted(toDoList);
+                    break;
+                case 10:
+                    recoverRemovedTask();
+                    break;
                 case 0:
                     System.out.println("\n\u001b[38;5;9mClosing ToDoList program...\u001b[0m");
                     break;
@@ -79,8 +91,9 @@ public class ToDoList {
 
         } while (userChoice != 0);
     }
+
     //------------------------------------------------------------------//
-    public static void showMenu(){
+    public static void showMenu() {
         System.out.println("\u001b[38;5;15m1 - Show ToDoList\u001b[0m");
         System.out.println("\u001b[38;5;15m2 - Create task\u001b[0m");
         System.out.println("\u001b[38;5;15m3 - Mark as completed\u001b[0m");
@@ -89,9 +102,15 @@ public class ToDoList {
         System.out.println("\u001b[38;5;15m6 - Delete task\u001b[0m");
         System.out.println("\u001b[38;5;15m7 - Organize alphabetically\u001b[0m");
         System.out.println("\u001b[38;5;15m8 - Upgrade ToDoList Plan\u001b[0m");
+        System.out.println("+----------+");
+        System.out.println("\u001b[38;5;15m9 - Remove all completed\u001b[0m");
+        System.out.println("\u001b[38;5;15m10 -Recover removed tasks \u001b[0m");
+        System.out.println("\u001b[38;5;15m11 -\u001b[0m");
+        System.out.println("+----------+");
         System.out.println("\u001b[38;5;15m0 - Exit ToDoList\u001b[0m\n");
         System.out.print("\u001b[38;5;15mChoose a option: \u001b[0m");
     }
+
     //------------------------------------------------------------------//
     public static void showToDoList(String[] toDoList) {
         int count = 0;
@@ -117,9 +136,11 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;9mThe ToDoList is empty! You should create a task first.\u001b[0m");
         }
     }
+
     //------------------------------------------------------------------//
     public static void createTask(String[] toDoList) {
         System.out.print("\n\u001b[38;5;15mCreate task: \u001b[0m");
+        scan.nextLine();
         String userNewTask = scan.nextLine().trim();
         if (!userNewTask.isEmpty()) {
             boolean added = false;
@@ -127,6 +148,7 @@ public class ToDoList {
                 if (toDoList[i] == null) {
                     toDoList[i] = userNewTask;
                     System.out.println("\n\u001b[38;5;10mThe task '\u001b[38;5;15m" + userNewTask + "\u001b[38;5;10m' was created!\u001b[0m");
+                    creatNote(toDoList, i);
                     added = true;
                     break;
                 }
@@ -138,6 +160,25 @@ public class ToDoList {
             System.out.println("\n\n\u001b[38;5;9mTask name cannot be empty.\u001b[0m");
         }
     }
+
+    //------------------------------------------------------------------//
+    public static void creatNote(String[] toDoList, int num) {
+        if (toDoList[num] != null) {
+            System.out.println("Creat a note");
+            System.out.println("[Y]es / [N]o");
+            String choiceYN = scan.next().toLowerCase();
+
+            if (choiceYN.equals("y")) {
+                System.out.print("Insert note: ");
+                scan.nextLine();
+                String newNote = scan.nextLine();
+                toDoList[num] += " Note:" + newNote;
+            } else System.out.println("Continue...");
+        } else {
+            System.out.println("Impossible to create a note");
+        }
+    }
+
     //------------------------------------------------------------------//
     public static void markTaskAsCompleted(String[] toDoList) {
         int count = 0;
@@ -165,6 +206,7 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;9mYou don't have tasks!\u001b[0m");
         }
     }
+
     //------------------------------------------------------------------//
     public static void removeTaskAsCompleted(String[] toDoList) {
         int existsCompletedTasks = 0;
@@ -187,6 +229,40 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;9mYou don't have completed tasks!\u001b[0m");
         }
     }
+
+    //------------------------------------------------------------------//
+    public static void removeAllTaskCompleted(String[] toDoList) {
+        int counter = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
+                String temp = toDoList[i];
+                doneTask.add(counter, temp);
+                removedTask.add(counter, temp);
+                toDoList[i] = null;
+                counter++;
+            }
+        }
+        showToDoList(toDoList);
+    }
+
+    //------------------------------------------------------------------//
+    public static void recoverRemovedTask() {
+        System.out.println("\"\\n\\u001b[38;5;15mChoose a task to recover: \\u001b[0m\"");
+        for (int i = 0; i < removedTask.size(); i++) {
+            System.out.println(i + "-" + removedTask.get(i));
+        }
+        System.out.print("Insert option: ");
+        int optIn = scan.nextInt();
+        int countSpace = 0;
+        for (int i = 0; i < toDoList.length; i++) {
+            if (toDoList[i] != null) {
+                countSpace ++;
+            } else {
+                toDoList[countSpace] = removedTask.get(optIn);
+            }
+        }
+    }
+
     //------------------------------------------------------------------//
     public static void editTask(String[] toDoList) {
         int count = 0;
@@ -227,6 +303,7 @@ public class ToDoList {
             System.out.println("\n\u001b[38;5;9mYou don't have tasks to edit!\u001b[0m");
         }
     }
+
     //------------------------------------------------------------------//
     public static void deleteTask(String[] toDoList) {
         int existedTasks = 0;
@@ -242,6 +319,7 @@ public class ToDoList {
 
             if (toDoList[userChoiceOfTaskToDelete] != null) {
                 System.out.println("\u001b[38;5;10mThe task '\u001b[38;5;15m" + toDoList[userChoiceOfTaskToDelete] + "\u001b[38;5;10m' was successfully deleted!\u001b[0m");
+                removedTask.add(toDoList[userChoiceOfTaskToDelete]);
                 toDoList[userChoiceOfTaskToDelete] = null;
             } else {
                 System.out.println("\u001b[38;5;9mInvalid task option!\u001b[0m");
@@ -250,6 +328,21 @@ public class ToDoList {
             System.out.println("\u001b[38;5;9mYou don't have tasks to delete!\u001b[0m");
         }
     }
+
+    //------------------------------------------------------------------//
+    //VER!!!!
+    public static void organizeTask() {
+        for (int i = 0; i < toDoList.length - 1; i++) {
+            for (int j = 0; j < toDoList.length - i - 1; j++) {
+                if (toDoList[j].contains(" ✅") && !toDoList[j + 1].contains(" ✅")) {
+                    String temp = toDoList[j];
+                    toDoList[j] = toDoList[j + 1];
+                    toDoList[j + 1] = temp;
+                }
+            }
+        }
+    }
+
     //------------------------------------------------------------------//
     public static void organizeAlphabetically(String[] toDoList) {
         int count = 0;
@@ -260,6 +353,7 @@ public class ToDoList {
         }
         Arrays.sort(toDoList, 0, count);
     }
+
     //------------------------------------------------------------------//
     public static boolean upgradeToDoListPlan(String[] toDoList, boolean premium) {
         if (!premium) {
@@ -284,5 +378,6 @@ public class ToDoList {
         return premium;
     }
     //------------------------------------------------------------------//
+
 
 }
