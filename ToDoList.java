@@ -64,7 +64,7 @@ public class ToDoList {
                         organizeAlphabetically();
                         break;
                     case 8:
-                        premiumPlan = upgradeToDoListPlan( premiumPlan);
+                        premiumPlan = upgradeToDoListPlan(premiumPlan);
                         if (premiumPlan) {
                             String[] tempToDoList = new String[30];
 
@@ -99,8 +99,8 @@ public class ToDoList {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Error");
+                //System.out.println(e);
+                System.out.println("Returning to main menu...");
                 scan.next();
             }
         }
@@ -203,7 +203,7 @@ public class ToDoList {
                 scan.nextLine();
                 String newNote = scan.nextLine();
                 ToDoList.toDoList[num] += " Note:" + newNote;
-            } else System.out.println("Continue...");
+            } else System.out.println("Returning to menu...\n");
         } else {
             System.out.println("Impossible to create a note");
         }
@@ -254,6 +254,7 @@ public class ToDoList {
 
             if (toDoList[userChoiceOfTaskToRemoveAsCompleted] != null) {
                 toDoList[userChoiceOfTaskToRemoveAsCompleted] = toDoList[userChoiceOfTaskToRemoveAsCompleted].replace(" ✅", "");
+                addTimeStamps("Task" + toDoList[userChoiceOfTaskToRemoveAsCompleted] + " was removed as done at: ");
             } else {
                 System.out.println("\n\u001b[38;5;9mInvalid task option!\u001b[0m");
             }
@@ -279,7 +280,7 @@ public class ToDoList {
 
     //------------------------------------------------------------------//
     public static void recoverRemovedTask() {
-        System.out.println("\"\\n\\u001b[38;5;15mChoose a task to recover: \\u001b[0m\"");
+        System.out.println("\n\u001b[38;5;15mChoose a task to recover: \u001b[0m");
         for (int i = 0; i < removedTask.size(); i++) {
             System.out.println(i + "-" + removedTask.get(i));
         }
@@ -291,6 +292,8 @@ public class ToDoList {
                 countSpace++;
             } else {
                 toDoList[countSpace] = removedTask.get(optIn);
+                removedTask.remove(optIn);
+                break;
             }
         }
     }
@@ -365,18 +368,16 @@ public class ToDoList {
 
     //------------------------------------------------------------------//
     public static void organizeTask() {
-        int count = 0;
         for (int i = 0; i < toDoList.length; i++) {
             for (int j = 0; j < toDoList.length - i - 1; j++) {
-                if (toDoList[i] != null && toDoList[i].contains(" ✅")) {
+                if (toDoList[j] != null && toDoList[j + 1] != null
+                        && !toDoList[j].contains(" ✅") && toDoList[j + 1].contains(" ✅")) {
                     String temp = toDoList[j];
                     toDoList[j] = toDoList[j + 1];
                     toDoList[j + 1] = temp;
-                    count++;
                 }
             }
         }
-        Arrays.sort(toDoList, 0, count);
         showToDoList();
     }
 
@@ -393,7 +394,7 @@ public class ToDoList {
     }
 
     //------------------------------------------------------------------//
-    public static boolean upgradeToDoListPlan( boolean premium) {
+    public static boolean upgradeToDoListPlan(boolean premium) {
         if (!premium) {
             System.out.println("\n\u001b[38;5;15mDo you want to buy Premium Plan? (yes or no)\u001b[0m");
             System.out.print("\u001b[38;5;15m> \u001b[0m");
