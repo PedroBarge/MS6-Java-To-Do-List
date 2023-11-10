@@ -162,7 +162,7 @@ public class ToDoList {
                 temp++;
             }
         }
-        temp = temp / 100;
+        temp = temp / toDoList.length;
         System.out.println(temp + "%");
     }
 
